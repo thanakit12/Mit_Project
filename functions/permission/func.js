@@ -11,7 +11,8 @@ const check_admin_nisit_permission = (req,res,next) => {
     }
     else{
         const token = req.headers.token
-        admin.auth().verifyIdToken(token).then((claims) => {
+        admin.auth().verifyIdToken(token)
+        .then((claims) => {
             if(claims.admin === true || claims.nisit === true){
                 next();
             }
@@ -20,6 +21,11 @@ const check_admin_nisit_permission = (req,res,next) => {
                     message:"You don't have permission"
                 })
             }
+        })
+        .catch(err => {
+            return res.status(500).json({
+                message: err.message
+            })
         })
     }
 }
@@ -32,7 +38,8 @@ const permission_professor = (req,res,next) => {
     }
     else{
         const token = req.headers.token
-        admin.auth().verifyIdToken(token).then(claim => {
+        admin.auth().verifyIdToken(token)
+        .then(claim => {
             if(claim.professor === true){
                 req.user_id = claim.user_id
                 next()
@@ -40,6 +47,11 @@ const permission_professor = (req,res,next) => {
             else{
                 return res.status(403).json({message:"You don't have permission"})
             }
+        })
+        .catch(err => {
+            return res.status(500).json({
+                message: err.message
+            })
         })
     }
 }
@@ -52,14 +64,21 @@ const permission_all = (req,res,next) => {
     }
     else{
         const token = req.headers.token
-        admin.auth().verifyIdToken(token).then(claim => {
+        admin.auth().verifyIdToken(token)
+        .then(claim => {
             if(claim.professor === true || claim.admin === true || claim.nisit === true){
                 req.user_id = claim.user_id
+                req.permission = claim
                 next()
             }
             else{
                 return res.status(403).json({message:"You don't have permission"})
             }
+        })
+        .catch(err => {
+            return res.status(500).json({
+                message: err.message
+            })
         })
     }
 }
@@ -72,7 +91,8 @@ const nisit_permission = (req,res,next) => {
     }
     else{
         const token = req.headers.token
-        admin.auth().verifyIdToken(token).then(claim => {
+        admin.auth().verifyIdToken(token)
+        .then(claim => {
             if(claim.nisit === true){
                 req.user_id = claim.user_id
                 next()
@@ -80,6 +100,11 @@ const nisit_permission = (req,res,next) => {
             else{
                 return res.status(403).json({message:"You don't have permission"})
             }
+        })
+        .catch(err => {
+            return res.status(500).json({
+                message: err.message
+            })
         })
     }
 }
