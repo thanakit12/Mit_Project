@@ -12,6 +12,6 @@
   "dependencies": {
     "cors": "^2.8.5",
     "firebaseauth": "^1.0.0",
-    "nodemailer": "^6.4.6"
+    "nodemailer": "^6.4.16"
   }
 }
